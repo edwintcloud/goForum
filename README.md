@@ -3,5 +3,6 @@ A monolithic web application written in golang using only standard library plugi
 
 ## Getting Started
 1. Clone repo anywhere you like.
-2. Fetch dependencies using govendor: `govendor sync`
-3. Run the app: `go run *.go`
+2. Make sure Docker is installed and properly configured
+3. Build and Run the app `docker-compose build && docker-compose up`
+4. See it in action in your local browser at [127.0.0.1:8080](http://127.0.0.1:8080)

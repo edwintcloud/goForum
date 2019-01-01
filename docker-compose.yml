@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  database:
+    image: postgres:alpine
+    ports: 
+      - 127.0.0.1:27019:27017
+    environment:
+      POSTGRES_PASSWORD: "supersecret"
+  app:
+    build: .
+    ports:
+      - 127.0.0.1:8080:8080
+    depends_on:
+      - database
+    
