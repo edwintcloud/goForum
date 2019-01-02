@@ -6,21 +6,30 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/edwintcloud/goForum/models"
 )
 
 // IndexHandler serves our index page
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	thread := models.Thread{}
 
-	// parse template files to ensure they are valid
-	templates := template.Must(template.ParseFiles(
-		fmt.Sprintf("%v/views/layout.html", curDir()),
-		fmt.Sprintf("%v/views/public.navbar.html", curDir()),
-		fmt.Sprintf("%v/views/index.html", curDir()),
-	))
+	// get threads from db
+	threads, err := thread.GetAll()
+	if err != nil {
+		sendError(w, r, "Unable to get threads")
+	} else {
 
-	// respond with layout template
-	templates.ExecuteTemplate(w, "layout", "")
+		// parse template files to ensure they are valid
+		templates := template.Must(template.ParseFiles(
+			fmt.Sprintf("%v/views/layout.html", curDir()),
+			fmt.Sprintf("%v/views/public.navbar.html", curDir()),
+			fmt.Sprintf("%v/views/index.html", curDir()),
+		))
 
+		// respond with layout template
+		templates.ExecuteTemplate(w, "layout", threads)
+	}
 }
 
 // ErrorHandler serves our error page

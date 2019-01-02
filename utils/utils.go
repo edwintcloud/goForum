@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"database/sql"
@@ -23,15 +23,17 @@ type Configuration struct {
 	DbName       string
 }
 
-// Initialize our package global variables
-var config Configuration
-var logger *log.Logger
+// Config is our exported configuration instance
+var Config Configuration
+
+// Logger is our exported logger instance
+var Logger *log.Logger
 
 // Db is our exported db connection instance to be used by the models
 var Db *sql.DB
 
-// configuration loader utility function
-func loadConfiguration() error {
+// LoadConfiguration is a configuration loader utility function
+func LoadConfiguration() error {
 
 	// try to open config file
 	file, err := os.Open("config.json")
@@ -41,7 +43,7 @@ func loadConfiguration() error {
 
 	// try to decode file into package global config struct using json decoder
 	decoder := json.NewDecoder(file)
-	err = decoder.Decode(&config)
+	err = decoder.Decode(&Config)
 	if err != nil {
 		return err
 	}
@@ -50,8 +52,8 @@ func loadConfiguration() error {
 	return nil
 }
 
-// log loader utility function
-func loadLog() error {
+// LoadLog is a log loader utility function
+func LoadLog() error {
 
 	// try to open log file, or create if it doesn't exist
 	file, err := os.OpenFile("goForum.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
@@ -60,23 +62,23 @@ func loadLog() error {
 	}
 
 	// set package global logger to new logger instance with file
-	logger = log.New(file, "INFO ", log.Ldate|log.Ltime|log.Lshortfile)
+	Logger = log.New(file, "INFO ", log.Ldate|log.Ltime|log.Lshortfile)
 
 	// if all went well, return nil
 	return nil
 }
 
-// connect to database
-func connectToDb() error {
+// ConnectToDb connects to database
+func ConnectToDb() error {
 	var err error
 
 	// connect to postgres db and set package global Db to Db instance
 	Db, err = sql.Open("postgres", fmt.Sprintf(
 		"postgres://%v:%v@%s/%s?sslmode=disable",
-		config.DbUser,
-		config.DbPassword,
-		config.DbHost,
-		config.DbName,
+		Config.DbUser,
+		Config.DbPassword,
+		Config.DbHost,
+		Config.DbName,
 	))
 	if err != nil {
 		return err
@@ -86,8 +88,8 @@ func connectToDb() error {
 	return nil
 }
 
-// Initialize database by creating tables if they do not exist
-func initializeDb() error {
+// InitializeDb creates tables if they do not exist
+func InitializeDb() error {
 
 	// Create users table
 	_, err := Db.Exec(`CREATE TABLE IF NOT EXISTS users (
