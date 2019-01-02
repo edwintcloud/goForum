@@ -3,5 +3,9 @@
   "ReadTimeout"    : 10,
   "WriteTimeout"   : 600,
   "Static"         : "public",
-  "Version"        : "0.0.1"
+  "Version"        : "0.0.1",
+  "DbHost"         : "database",
+  "DbName"         : "goForum",
+  "DbUser"         : "postgres",
+  "DbPassword"     : "supersecret"
 }

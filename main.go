@@ -9,15 +9,27 @@ import (
 
 // init is executed before main, here we will load configuration and logs
 func init() {
-	// loadConfiguration() and loadLog() are found in utils.go
-	// both return error or nil if no error
-	// If there is an error, program will exit with code 1
+
+	// Load configuration from file using utils.go function
 	if err := loadConfiguration(); err != nil {
 		log.Fatalf("Failed to load configuration file: %v\n", err)
 	}
+
+	// Load logs from file using utils.go function
 	if err := loadLog(); err != nil {
 		log.Fatalf("Failed to load log file: %v\n", err)
 	}
+
+	// Connect to database using utils.go function
+	if err := connectToDb(); err != nil {
+		log.Fatalf("Failed to connect to db: %v\n", err)
+	}
+
+	// Initialize database using utils.go function
+	if err := initializeDb(); err != nil {
+		log.Fatalf("Failed to create neccessary tables for db: %v\n", err)
+	}
+
 }
 
 // main entry point of our program

@@ -4,9 +4,10 @@ services:
   database:
     image: postgres:alpine
     ports: 
-      - 127.0.0.1:27019:27017
+      - 127.0.0.1:5437:5432
     environment:
       POSTGRES_PASSWORD: "supersecret"
+      POSTGRES_DB: "goForum"
   app:
     build: .
     ports:
