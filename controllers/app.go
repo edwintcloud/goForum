@@ -20,25 +20,36 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		sendError(w, r, "Unable to get threads")
 	} else {
 
-		// parse template files to ensure they are valid
-		templates := template.Must(template.ParseFiles(
-			fmt.Sprintf("%v/views/layout.html", curDir()),
-			fmt.Sprintf("%v/views/public.navbar.html", curDir()),
-			fmt.Sprintf("%v/views/index.html", curDir()),
-		))
-
-		// respond with layout template
-		templates.ExecuteTemplate(w, "layout", threads)
+		// render template with data and files
+		render(w, threads, "layout", "public.navbar", "index")
 	}
 }
 
 // ErrorHandler serves our error page
 func ErrorHandler(w http.ResponseWriter, r *http.Request) {
 	msg := r.URL.Query().Get("msg")
-	if len(msg) > 0 {
-		fmt.Printf("Error: %v", r.URL.Query().Get("msg"))
+
+	// render template with data and files
+	render(w, msg, "layout", "public.navbar", "error")
+}
+
+// render function parses template files or returns returns error to client
+func render(w http.ResponseWriter, data interface{}, filenames ...string) {
+	var files []string
+
+	// build file list slice
+	for _, file := range filenames {
+		files = append(files, fmt.Sprintf("%v/views/%v.html", curDir(), file))
+	}
+
+	// attempt to parse files
+	templates, err := template.ParseFiles(files...)
+	if err != nil {
+		fmt.Fprintf(w, "Unable to render templates: %v", err)
 	} else {
-		fmt.Print("No error message specified")
+
+		// render template
+		templates.ExecuteTemplate(w, "layout", data)
 	}
 }
 

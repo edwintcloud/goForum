@@ -1,12 +1,15 @@
 package main
 
 import (
-	"github.com/edwintcloud/goForum/controllers"
 	"net/http"
+
+	"github.com/edwintcloud/goForum/controllers"
 )
 
 func registerRoutes(mux *http.ServeMux) {
 
-	// Index route
+	// App routes
 	mux.HandleFunc("/", controllers.IndexHandler)
+	mux.HandleFunc("/error", controllers.ErrorHandler)
+
 }
