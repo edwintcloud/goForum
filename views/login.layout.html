@@ -1,25 +1,26 @@
-{{ define "layout" }} <!DOCTYPE html>
+{{ define "layout" }}
+
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>goForum</title>
-
-    <!-- CSS below this line -->
+    <title>goForum - Login</title>
+    <!-- CSS BEGIN -->
     <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/static/css/login.css" />
     <!-- CSS END -->
   </head>
   <body>
-    {{ template "navbar" . }}
-
     <div class="container">{{ template "content" . }}</div>
 
-    <!-- Javascript below this line -->
+    <!-- Javascript BEGIN -->
     <script src="/static/js/jquery-2.1.1.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
-    <!-- Javscript END -->
+    <!-- Javascript END -->
   </body>
 </html>
+
 {{ end }}
