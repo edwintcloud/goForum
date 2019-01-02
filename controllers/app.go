@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"bufio"
 	"fmt"
 	"html/template"
 	"log"
@@ -31,6 +32,34 @@ func ErrorHandler(w http.ResponseWriter, r *http.Request) {
 
 	// render template with data and files
 	render(w, msg, "layout", "public.navbar", "error")
+}
+
+// ViewLogHandler servers our logs as static html
+func ViewLogHandler(w http.ResponseWriter, r *http.Request) {
+	var log []string
+
+	// Open file for reading
+	file, err := os.Open(fmt.Sprintf("%v/goForum.log", curDir()))
+	if err != nil {
+		sendError(w, r, "Unable to load log file")
+	}
+
+	// defer file to close when function exits
+	defer file.Close()
+
+	// create new bufio scanner to read through file lines
+	scanner := bufio.NewScanner(file)
+
+	// iterate through file lines and append each line to log slice
+	for scanner.Scan() {
+		log = append(log, scanner.Text())
+	}
+	if err := scanner.Err(); err != nil {
+		sendError(w, r, "Unable to read log file lines")
+	}
+
+	// render template with data and files
+	render(w, log, "layout", "public.navbar", "log")
 }
 
 // render function parses template files or returns returns error to client

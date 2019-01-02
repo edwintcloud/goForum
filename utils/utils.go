@@ -62,7 +62,7 @@ func LoadLog() error {
 	}
 
 	// set package global logger to new logger instance with file
-	Logger = log.New(file, "INFO ", log.Ldate|log.Ltime|log.Lshortfile)
+	Logger = log.New(file, "INFO ", log.Ldate|log.Ltime)
 
 	// if all went well, return nil
 	return nil
@@ -143,4 +143,19 @@ func InitializeDb() error {
 
 	// if all went well, return nil
 	return nil
+}
+
+// Log appends to the log
+func Log(t string, args ...interface{}) {
+	switch t {
+	case "info":
+		Logger.SetPrefix("INFO ")
+	case "error":
+		Logger.SetPrefix("ERROR ")
+	case "warning":
+		Logger.SetPrefix("WARNING ")
+	default:
+		Logger.SetPrefix("INFO ")
+	}
+	Logger.Println(args...)
 }
