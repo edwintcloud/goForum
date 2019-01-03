@@ -44,3 +44,8 @@ func CreateAccountHandler(w http.ResponseWriter, r *http.Request) {
 		sendError(w, r, "Invalid method, POST is required for this endpoint")
 	}
 }
+
+// LoginHandler serves our login Page
+func LoginHandler(w http.ResponseWriter, r *http.Request) {
+	render(w, nil, "login.layout", "public.navbar", "login")
+}

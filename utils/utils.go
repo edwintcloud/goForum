@@ -181,7 +181,7 @@ func CreateUUID() string {
 
 	// Set the four most significant bits (bits 12 through 15) of the
 	// time_hi_and_version field to the 4-bit version number.
-	// (u[6] and 15) or (64), ensures u[6] is not larger than 15 and adds to 64
+	// (u[6] and 15) or (64), ensures u[6] is not larger than 15 and adds 64
 	u[6] = (u[6] & 0xF) | (0x4 << 4)
 
 	// return formatted uuid, %x translates to base 16, lower-case, two characters per byte
