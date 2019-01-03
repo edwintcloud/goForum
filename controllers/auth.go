@@ -32,10 +32,14 @@ func CreateAccountHandler(w http.ResponseWriter, r *http.Request) {
 			Password: r.PostFormValue("password"),
 		}
 
-		// just log for now
-		utils.Log("info", fmt.Sprintf("User created: %v", user.Email))
-
-		http.Redirect(w, r, "/login", 302)
+		// create new user in db
+		if err := user.Create(); err != nil {
+			utils.Log("error", fmt.Sprintf("Unable to create user: %s", err))
+			http.Redirect(w, r, "/", 302)
+		} else {
+			utils.Log("info", fmt.Sprintf("User created: %v", user.Email))
+			http.Redirect(w, r, "/login", 302)
+		}
 	} else {
 		sendError(w, r, "Invalid method, POST is required for this endpoint")
 	}

@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"crypto/rand"
+	"crypto/sha1"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -158,4 +160,35 @@ func Log(t string, args ...interface{}) {
 		Logger.SetPrefix("INFO ")
 	}
 	Logger.Println(args...)
+}
+
+// CreateUUID generated a random UUID from RFC 4122
+func CreateUUID() string {
+
+	// allocate a 16 length byte slice
+	u := make([]byte, 16)
+
+	// generate 16 cryptographically secure pseudorandom numbers from rand.Reader
+	// and write them into our byte slice
+	_, err := rand.Read(u)
+	if err != nil {
+		Log("error", fmt.Sprintf("Unable to generate UUID: %s", err))
+	}
+
+	// 0x40 is reserved variant from RFC 4122
+	// (u[8] or 64) and 127, ensures u[8] is not larger than 127
+	u[8] = (u[8] | 0x40) & 0x7F
+
+	// Set the four most significant bits (bits 12 through 15) of the
+	// time_hi_and_version field to the 4-bit version number.
+	// (u[6] and 15) or (64), ensures u[6] is not larger than 15 and adds to 64
+	u[6] = (u[6] & 0xF) | (0x4 << 4)
+
+	// return formatted uuid, %x translates to base 16, lower-case, two characters per byte
+	return fmt.Sprintf("%x-%x-%x-%x-%x", u[0:4], u[4:6], u[6:8], u[8:10], u[10:])
+}
+
+// Encrypt returns a SHA-1 hash from plain text
+func Encrypt(t string) string {
+	return fmt.Sprintf("%x", sha1.Sum([]byte(t)))
 }
