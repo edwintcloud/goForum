@@ -9,7 +9,7 @@ import (
 	"log"
 	"os"
 
-	_ "github.com/lib/pq"
+	_ "github.com/lib/pq" // postrgres driver needed for database/sql
 )
 
 // Configuration is our configuration struct for holding our configurations

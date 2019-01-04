@@ -21,8 +21,16 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		sendError(w, r, "Unable to get threads")
 	} else {
 
-		// render template with data and files
-		render(w, threads, "layout", "public.navbar", "index")
+		// check for a session
+		_, err := session(r)
+		if err != nil {
+			// render public template with data and files
+			render(w, threads, "layout", "public.navbar", "index")
+		} else {
+			// render private template with data and files
+			render(w, threads, "layout", "private.navbar", "index")
+		}
+
 	}
 }
 
@@ -94,4 +102,27 @@ func curDir() string {
 		log.Fatalf("Error while getting current directory: %v\n", err)
 	}
 	return wd
+}
+
+// session reads cookie from session uuid then reads session from db
+func session(r *http.Request) (models.Session, error) {
+	s := models.Session{}
+
+	// check for cookie
+	cookie, err := r.Cookie("session.uuid")
+	if err != nil {
+		return s, err
+	}
+
+	// cookie was found, set s.uuid
+	s.UUID = cookie.Value
+
+	// get session from db
+	err = s.GetSession()
+	if err != nil {
+		return s, err
+	}
+
+	// if all went well, return s and nil
+	return s, nil
 }
