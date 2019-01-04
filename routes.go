@@ -17,6 +17,7 @@ func registerRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/users", controllers.CreateAccountHandler)
 	mux.HandleFunc("/users/login", controllers.LoginHandler)
 	mux.HandleFunc("/users/authenticate", controllers.AuthenticateHandler)
+	mux.HandleFunc("/users/logout", controllers.LogoutHandler)
 
 	// View Log file in html format
 	mux.HandleFunc("/admin/log", controllers.ViewLogHandler)

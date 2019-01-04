@@ -118,7 +118,7 @@ func session(r *http.Request) (models.Session, error) {
 	s.UUID = cookie.Value
 
 	// get session from db
-	err = s.GetSession()
+	err = s.Get()
 	if err != nil {
 		return s, err
 	}

@@ -100,3 +100,29 @@ func AuthenticateHandler(w http.ResponseWriter, r *http.Request) {
 		sendError(w, r, "Invalid method, POST is required for this endpoint")
 	}
 }
+
+// LogoutHandler handles POST /users/logout by deleting the users session
+func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+	session := models.Session{}
+
+	// get session uuid from cookie
+	cookie, err := r.Cookie("session.uuid")
+	if err != nil {
+		utils.Log("error", fmt.Sprintf("Unable to find cookie for logout: %s", err))
+		sendError(w, r, "There was an error processing your request")
+	} else {
+
+		// set session.uuid to cookie value
+		session.UUID = cookie.Value
+
+		// delete session
+		err := session.Delete()
+		if err != nil {
+			utils.Log("error", fmt.Sprintf("Unable to delete session from db: %s", err))
+		}
+
+		// redirect to home
+		http.Redirect(w, r, "/", 302)
+
+	}
+}
