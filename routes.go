@@ -22,4 +22,8 @@ func registerRoutes(mux *http.ServeMux) {
 	// View Log file in html format
 	mux.HandleFunc("/admin/log", controllers.ViewLogHandler)
 
+	// Thread routes
+	mux.HandleFunc("/threads/new", controllers.NewThreadHandler)
+	mux.HandleFunc("/threads", controllers.CreateThreadHandler)
+
 }

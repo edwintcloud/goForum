@@ -10,11 +10,13 @@ import (
 )
 
 // SignupHandler serves our signup page
+// GET /users/signup
 func SignupHandler(w http.ResponseWriter, r *http.Request) {
 	render(w, nil, "login.layout", "public.navbar", "signup")
 }
 
 // CreateAccountHandler creates an account in the database and redirects to login
+// POST /users
 func CreateAccountHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Only accept POST requests otherwise return error
@@ -47,11 +49,13 @@ func CreateAccountHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // LoginHandler serves our login Page
+// GET /users/login
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	render(w, nil, "login.layout", "public.navbar", "login")
 }
 
 // AuthenticateHandler logs in a user an sets the session
+// POST /users/authenticate
 func AuthenticateHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Only accept POST request, otherwise return error
@@ -101,7 +105,8 @@ func AuthenticateHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// LogoutHandler handles POST /users/logout by deleting the users session
+// LogoutHandler handles deleting the users session
+// GET /users/logout
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	session := models.Session{}
 

@@ -12,6 +12,7 @@ import (
 )
 
 // IndexHandler serves our index page
+// GET /
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	thread := models.Thread{}
 
@@ -35,6 +36,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // ErrorHandler serves our error page
+// GET /error?msg=
 func ErrorHandler(w http.ResponseWriter, r *http.Request) {
 	msg := r.URL.Query().Get("msg")
 
