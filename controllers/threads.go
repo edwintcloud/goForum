@@ -60,3 +60,35 @@ func CreateThreadHandler(w http.ResponseWriter, r *http.Request) {
 		sendError(w, r, "Invalid method, POST is required for this endpoint")
 	}
 }
+
+// ViewThreadHandler serves our view thread page
+// GET /threads/read?id=
+func ViewThreadHandler(w http.ResponseWriter, r *http.Request) {
+
+	// get id from url query
+	id := r.URL.Query().Get("id")
+	if len(id) > 0 {
+
+		// create thread struct with data we need
+		thread := models.Thread{
+			UUID: id,
+		}
+
+		// get thread from db
+		if err := thread.GetByUUID(); err != nil {
+			sendError(w, r, "Unable to find thread")
+		} else {
+
+			// get our session
+			_, err := session(r)
+			if err != nil {
+				render(w, &thread, "layout", "public.navbar", "public.thread")
+			} else {
+				render(w, &thread, "layout", "private.navbar", "private.thread")
+			}
+		}
+
+	} else {
+		sendError(w, r, "Id not specified")
+	}
+}

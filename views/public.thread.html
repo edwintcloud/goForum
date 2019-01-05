@@ -11,9 +11,9 @@
   {{ range.Posts }}
   <div class="panel-body">
     <span class="lead"> <i class="fa fa-comment"></i> {{ .Body }}</span>
-    <div class="pull-right">{{ .User.Name }} - {{ .CreatedAtDate }}</div>
+    <div class="pull-right">{{ .CreatedBy }} - {{ .CreatedAtDate }}</div>
   </div>
-  {{ end }}
+  {{ end }
 </div>
 
 {{ end }}

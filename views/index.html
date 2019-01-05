@@ -8,10 +8,9 @@
     <span class="lead"> <i class="fa fa-comment-o"></i> {{ .Topic }}</span>
   </div>
   <div class="panel-body">
-    Started by {{ .CreatedBy }} - {{ .CreatedAtDate }} -
-    {{ .NumReplies }} posts.
+    Started by {{ .CreatedBy }} - {{ .CreatedAt.Format "01/02/2006 3:04:05 PM" }}
     <div class="pull-right">
-      <a href="/threads/read?id={{.Uuid }}">Read more</a>
+      <a href="/threads/read?id={{ .UUID }}">Read more</a>
     </div>
   </div>
 </div>

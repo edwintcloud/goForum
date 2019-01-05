@@ -25,5 +25,6 @@ func registerRoutes(mux *http.ServeMux) {
 	// Thread routes
 	mux.HandleFunc("/threads/new", controllers.NewThreadHandler)
 	mux.HandleFunc("/threads", controllers.CreateThreadHandler)
+	mux.HandleFunc("/threads/read", controllers.ViewThreadHandler)
 
 }

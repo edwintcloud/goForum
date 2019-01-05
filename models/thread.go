@@ -10,6 +10,7 @@ import (
 type Thread struct {
 	ID        int
 	UUID      string
+	Body      string
 	Topic     string
 	UserID    int
 	CreatedAt time.Time
@@ -64,5 +65,19 @@ func (t *Thread) Create() error {
 	}
 
 	// if all went well, return nil
+	return nil
+}
+
+// GetByUUID get a single thread from the db by uuid
+func (t *Thread) GetByUUID() error {
+
+	// Execute query, returning at most one row. Scan result into t
+	err := utils.Db.QueryRow("SELECT id, uuid, topic, user_id, created_at FROM threads WHERE uuid = $1", t.UUID).
+		Scan(&t.ID, &t.UUID, &t.Topic, &t.UserID, &t.CreatedAt)
+	if err != nil {
+		return err
+	}
+
+	// if all went went, return nil
 	return nil
 }
